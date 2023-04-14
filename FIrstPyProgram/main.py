@@ -1,17 +1,11 @@
-from flask import Flask
+file = open('names.txt', 'r', encoding='utf-8')
 
-app = Flask(__name__)
+list_1 = list()
+result_data = list()
+for line in file.readlines():
+    print(line.split('\n')[0].split(';'))
+    result_data.append(tuple(line.split('\n')[0].split(';')))
 
+file.close()
 
-@app.route('/')
-def main():
-    return "<h1>Hello, world</h1><br><a href='/index'>перейти на вторую страницу</a>"
-
-
-@app.route('/index/<x>/<y>')
-def index(x, y):
-    return f'Result:{int(x) + int (y)}'
-
-
-if __name__ == '__main__':
-    app.run()
+print(result_data)
