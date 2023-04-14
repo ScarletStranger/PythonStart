@@ -1,11 +1,17 @@
-file = open('names.txt', 'r', encoding='utf-8')
+from flask import Flask, render_template
 
-list_1 = list()
-result_data = list()
-for line in file.readlines():
-    print(line.split('\n')[0].split(';'))
-    result_data.append(tuple(line.split('\n')[0].split(';')))
+app = Flask(__name__)
 
-file.close()
 
-print(result_data)
+@app.route('/')
+def main():
+    with open('names.txt','r', encoding='utf-8') as file:
+        resultData = list()
+        for line in file.readlines():
+            resultData.append(tuple(line.split('\n')[0].split(';')))
+        
+    return render_template('base.html', data=resultData)
+
+
+if __name__ == '__main__':
+    app.run()

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+(% block content %)
+
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+</head>
+
+<body>
+<table>
+    (% for row in data %)
+        <td>{{row[0]}} {{row[1]}} {{row[2]}} <br></td>
+    (% endfor %)
+</table>
+(% endblock %)
+</body>
+
+</html>
