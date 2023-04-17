@@ -22,39 +22,28 @@ else:
 """
 # Задача 12: Петя и Катя – брат и сестра. Петя – студент, а Катя – школьница. Петя помогает Кате по математике.
 # Он задумывает два натуральных числа X и Y (X,Y≤1000), а Катя должна их отгадать. Для этого Петя делает две подсказки.
-# Он называет сумму этих чисел S и их произведение P. Помогите Кате отгадать задуманные Петей числа.
+# Он называет сумму этих чисел sum и их произведение mult. Помогите Кате отгадать задуманные Петей числа.
 # sum 60 mult 900
-"""
-import math
-
-sum = int(input('Введите сумму задуманных чисел '))
-mult = int(input('Введите произведение задуманных чисел '))
 
 first_num = None
 second_num = None
 
-a = 1
-b = -sum
-c = mult
-d = b*b - 4*a*c
+sum = int(input('Введите сумму задуманных чисел '))
+mult = int(input('Введите произведение задуманных чисел '))
 
-if d > 0:
-    first_num = (-b//2*a)
-else:
-    first_num = ((-b+math.sqrt(d)) // (2*a))
-second_num = sum-first_num
-print(f'Первое число - {first_num}, а второе - {second_num}')
-"""
+for first_num in range(sum):
+    for second_num in range(mult):
+        if sum == first_num + second_num and mult == first_num * second_num:
+            print(f'Первое число - {first_num}, а второе - {second_num}')
+
 # Задача 14: Требуется вывести все целые степени двойки (т.е. числа вида 2k), не превосходящие числа N.
-
+"""
 limit = int(input('Введите предел '))
-twos=1
+twos = 1
+count = 0
 
-while twos<limit:
-    if twos<limit:
-        twos *=2
-        count=1
-        count+=1
-        print(count, twos)
-    else:
-        print(count, twos)
+while twos <= limit:
+    print(count, twos)
+    twos *= 2
+    count += 1
+"""
