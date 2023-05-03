@@ -1,6 +1,5 @@
 from random import randint
 
-
 # У класса Chromosome будет три свойства:
 # rating - рейтинг хромосомы
 # size - размер хромосомы
@@ -18,9 +17,8 @@ class Chromosome:
 # Принимает параметры:
 # Длина хромосомы(size)
 # Набор генов для создания хромосомы (gene_pool)
-
     def set_random_genes(self, gene_pool):
-        gene_pool_range = len(gene_pool)
+        gene_pool_range = len(gene_pool) - 1
         for i in range(self.size):
             rand_pos = randint(0, gene_pool_range)
             self.genes[i] = gene_pool[rand_pos]
@@ -35,7 +33,8 @@ def create_population(pop_size, chromo_size, genes):
     population = [None] * pop_size
     for i in range(pop_size):
         population[i] = Chromosome(chromo_size, gene_pool)
-        return population
+
+    return population
 
 
 # функция вычисления рейтинга
@@ -54,21 +53,22 @@ def calc_rating(population, final_chromo):
 def sort_population(population):
     size = len(population)
     repeat = True
-    while (repeat):
+    while repeat:
         repeat = False
         for i in range(0, size - 1):
             bubble = population[i]
-            if (bubble.rating > population[i+1].rating):
-                population[i] = population[i+1]
-                population[i+1] = bubble
+            if (bubble.rating > population[i + 1].rating):
+                population[i] = population[i + 1]
+                population[i + 1] = bubble
                 repeat = True
-
+    
 
 # Функция отбора по принципу наилучшего(элитизм)
 # Принимате параметры:
 # Созданная популяция(population)
 # Выжившие образцы(survivors)
 def select(population, survivors):
+    # elitism selection
     size = len(survivors)
     for i in range(size):
         survivors[i] = population[i]
@@ -109,7 +109,7 @@ def get_parent_index(parents, exclude_index):
 # Хромосома первого родителя(chromo1)
 # Хромосома второго родителя(chromo2)
 def cross(chromo1, chromo2):
-    size = chromo_size
+    size = chromo1.size
     point = randint(0, size - 1)
     child = Chromosome(size, None)
     for i in range(point):
@@ -126,7 +126,7 @@ def cross(chromo1, chromo2):
 # Количество хромосом(chromo_count)
 # Количество генов(gene_count)
 # Все возможные гены(gene_pool)
-def mutate (population, chromo_count, gene_count, gene_pool):
+def mutate(population, chromo_count, gene_count, gene_pool):
     pop_size = len(population)
     gene_pool_size = len(gene_pool)
     for i in range(chromo_count):
@@ -135,7 +135,7 @@ def mutate (population, chromo_count, gene_count, gene_pool):
         for j in range(gene_count):
             gene_pos = randint(0, gene_pool_size - 1)
             gene = gene_pool[gene_pos]
-            gene_pos = randint(0, chromo_size - 1)
+            gene_pos = randint(0, chromo.size - 1)
             chromo.genes[gene_pos] = gene
 
 
@@ -146,31 +146,33 @@ def print_population(population):
         i += 1
         print(str(i) + '. ' + str(chromo.rating) + ': ' + chromo.genes.decode())
 
+
 # Генофонд - строка-справочник со всеми возможными генами.
 # Его и целевую строку(хромосому) кодируют в байтовые массивы
+gene_pool = bytearray(b'abcdefghijklmnopqrstuvwxyz ') 
+final_chromo = bytearray(b'i love geekbrains and chess and games')
 
+# Набор генов для создания хромосомы
+# целевая строка
+chromo_size = len(final_chromo)
+population_size = 20
 
-gene_pool = bytearray(b'abcdefghijklmnopqrstuvwxyz ') # Набор генов для создания хромосомы
-final_chromo = bytearray(b'conundrum')  # целевая строка
+# Количество выживших по приципу элитизма
+survivors = [None] * (population_size // 2)
 
-chromo_size = len(final_chromo)  # размер целевой строки
-population_size = 20  # размер популяции
-
-
-survivors = [None] * (population_size // 2) # Количество выживших по приципу элитизма
 population = create_population(population_size, chromo_size, gene_pool)
 
-iteration_count = 0 # счётчик поколений
+iteration_count = 0
 
-while True:
+while True:  
     iteration_count += 1
     calc_rating(population, final_chromo)
     sort_population(population)
     print('*** ' + str(iteration_count) + ' ***')
-    print_population(population)
-    if population[0].rating ==0 :
+    print_population(population) 
+    if population[0].rating == 0:   
         break
 
-select(population, survivors)
-repopulate(population, survivors, population_size // 2)
-mutate(population, 10, 1, gene_pool) # мутация делается по 1 гену за цикл
+    select(population, survivors)
+    repopulate(population, survivors, population_size // 2)
+    mutate(population, 10, 1, gene_pool) # мутация делается по 1 гену за цикл
