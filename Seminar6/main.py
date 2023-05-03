@@ -31,16 +31,39 @@ print(sum([my_list.count(i)//2 for i in set(my_list)]))
 # Например числа 220 и 284 - дружественные.
 # Dыведите все пары дружественных чисел до k=10000
 
+import time 
+
 n = int(input('Введите число от 1 до 10000 '))
 
-def Summa(n):
-    summ = 0
-    for k in range(1, n//2+1):
-        if n % k == 0:
-            summ += 1
-    return summ
+# Первый способ
+# start = time.time()
+# def sum_divisors(n):
+#     divisors = []
+#     for i in range(1, n):
+#         if n % i == 0:
+#             divisors.append(i)
+#     return sum(divisors)
 
-for i in range(1, 10000):
-    j = Summa(i)
-    if i < j <= n and i == Summa(j):
-        print(i,j)
+# result = []
+# for n in range(1, 10000):
+#     m = sum_divisors(n)
+#     if sum_divisors(m) == n and n != m:
+#         result.append((n, m))
+# print(result)
+# end = time.time() - start
+# print(end)
+
+
+# Второй способ
+start = time.time()
+def friendly_numbers(n):
+    if n <= 0:
+        return []
+    friends = []
+    for i in range(2, 10001):
+        while n % i == 0 and n > 0:
+            friends.append(i)
+            n //= i
+    return sorted(friends)[::-1]
+end = time.time() - start
+print(end)
